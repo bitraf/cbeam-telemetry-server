@@ -140,13 +140,24 @@ outside.addMeasurement('isopen', 'frontdoor_is_open', [
   persist: true
 });
 
+var power = new app.Dictionary('Power', 'Power draw');
+power.addMeasurement('shopbot', 'shopbot_current_draw', [
+  {
+    format: 'float'
+  }
+], {
+  topic: 'bitraf/currentsensor/shopbot',
+  timeseries: 'CurrentSensorShopbot',
+  persist: true,
+});
+
 // Start the server
 var server = new app.Server({
   host: process.env.HOST || 'localhost',
   port: process.env.PORT || 8080,
   wss_port: process.env.WSS_PORT || 8082,
   broker: process.env.MSGFLO_BROKER || 'mqtt://localhost',
-  dictionaries: [floor2, floor3, floor4, outside],
+  dictionaries: [floor2, floor3, floor4, outside, power],
   theme: 'Snow',
   timeWindow: 24 * 60 * 60 * 1000,
   history: {
